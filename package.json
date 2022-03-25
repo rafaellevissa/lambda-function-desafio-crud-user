@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "serverless-layers": "^2.5.4-beta.1",
+    "serverless-offline": "^8.5.0"
+  }
+}

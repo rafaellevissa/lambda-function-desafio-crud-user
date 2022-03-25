@@ -1,0 +1,80 @@
+service: lambda-function-desafio-crud-user
+frameworkVersion: "3"
+plugins:
+  - serverless-offline
+  - serverless-layers
+custom:
+  secrets: ${file(env.json)}
+  tableName: "hitbel_sessions"
+  serverless-layers:
+    functions:
+      - register
+      - login
+      - auth
+      - sessions
+    dependenciesPath: ./requirements.txt
+provider:
+  name: aws
+  runtime: python3.8
+  deploymentBucket: "hitbel"
+  environment:
+    JWT_SECRET: ${self:custom.secrets.JWT_SECRET}
+    AWS_ID: ${self:custom.secrets.AWS_ID}
+    DB_DATABASE: ${self:custom.secrets.DB_DATABASE}
+    DB_HOST: ${self:custom.secrets.DB_HOST}
+    DB_USERNAME: ${self:custom.secrets.DB_USERNAME}
+    DB_PASSWORD: ${self:custom.secrets.DB_PASSWORD}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+      Resource: "arn:aws:dynamodb:us-east-1:${self:custom.secrets.AWS_ID}:table/${self:custom.tableName}"
+functions:
+  auth:
+    handler: functions/authorizer.handler
+
+  login:
+    handler: functions/login.handler
+    events:
+      - http:
+          path: /login
+          method: post
+
+  register:
+    handler: functions/register.handler
+    events:
+      - http:
+          path: /register
+          method: post
+
+  sessions:
+    handler: functions/sessions.handler
+    events:
+      - http:
+          path: /sessions
+          method: get
+          authorizer:
+            name: auth
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 3600
+
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: token
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: token
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

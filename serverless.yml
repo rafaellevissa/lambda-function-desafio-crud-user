@@ -29,6 +29,7 @@ provider:
       Action:
         - "dynamodb:GetItem"
         - "dynamodb:PutItem"
+        - "dynamodb:Scan"
       Resource: "arn:aws:dynamodb:us-east-1:${self:custom.secrets.AWS_ID}:table/${self:custom.tableName}"
 functions:
   auth:

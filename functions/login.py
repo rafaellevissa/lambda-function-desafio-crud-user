@@ -7,6 +7,7 @@ from lib.user import User
 from lib.schemas import login_schema
 from lib.utils import response
 from lib.session import Session
+from datetime import datetime, timedelta, timezone
 
 
 def handler(event, context):
@@ -29,7 +30,12 @@ def handler(event, context):
     if not password_match:
       raise Exception(not_found)
 
-    access_token = jwt.encode(user, os.environ['JWT_SECRET'], algorithm="HS256").decode('utf8')
+    access_token_dict = {
+      **user,
+      'exp': datetime.now(tz=timezone.utc) + timedelta(hours=1)
+    }
+
+    access_token = jwt.encode(access_token_dict, os.environ['JWT_SECRET'], algorithm="HS256").decode('utf8')
 
     data = {'access_token': access_token}
 

@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "91294d4d-18b6-4eb3-aed8-8eb5dc3cbede",
+		"name": "hitbel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NywibmFtZSI6InJhZmFlbCBsZXZpIiwidXNlcm5hbWUiOiJyYWZhZWwyIiwicGFzc3dvcmQiOiIkMmIkMTIkTnhSLzZzNUdxVnFCc0syVGhiYVJ6LnNoUlBCRS5oeXpNN3oxWmxqZGdiMGZ6Yi9TT3hMTG0ifQ.DTKclr_f018mgpPhNR9SdISIlv9Ce15a66_c2eJkPDI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"rafael levi\",\n    \"username\": \"user2000\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hobsrhhbki.execute-api.us-east-1.amazonaws.com/dev/register",
+					"protocol": "https",
+					"host": [
+						"hobsrhhbki",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"user2000\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://hobsrhhbki.execute-api.us-east-1.amazonaws.com/dev/login",
+					"protocol": "https",
+					"host": [
+						"hobsrhhbki",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sessions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsIm5hbWUiOiJyYWZhZWwgbGV2aSIsInVzZXJuYW1lIjoidXNlcjIwMDAiLCJwYXNzd29yZCI6IiQyYiQxMiRYS2hBNWJOWm5VQU44YVBRTExzcjguTmV0ZFpKb2ZIdlBuTFVrVmFlM012U0tLMUdmQUlFMiIsImV4cCI6MTY0ODQxMDU3OX0.PtBPMedJSrA2r_2vh12UJXC469aUilJMV9YP9JBwpAs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://hobsrhhbki.execute-api.us-east-1.amazonaws.com/dev/sessions",
+					"protocol": "https",
+					"host": [
+						"hobsrhhbki",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -2,8 +2,8 @@ import jwt
 import os
 
 def generate_policy_document(effect: str, method_arn: str) -> dict:
-  if not effect or not method_arn:
-    raise Exception('either effect or the method arn was not found')
+  assert effect
+  assert method_arn
 
   policy_document = {
     'Version': "2012-10-17",
@@ -29,12 +29,12 @@ def generate_auth_response(principal_id, effect, method_arn):
 def handler(event, context):
   try:
     token = 'authorizationToken' in event and event['authorizationToken'].replace('Bearer ', '')
-    method_arn = event['methodArn']
+    method_arn = event.get('methodArn')
 
     if not token or not method_arn:
       raise Exception()
 
-    user = jwt.decode(token, os.environ['JWT_SECRET'])
+    user = jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])
 
     if isinstance(user, dict) and 'id' in user:
       return generate_auth_response(user['id'], 'Allow', method_arn)

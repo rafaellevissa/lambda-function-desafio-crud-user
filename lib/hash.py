@@ -2,6 +2,7 @@ import bcrypt
 
 class Hash:
   def encrypt(self, plain_text: str):
+    assert isinstance(plain_text, str)
     hashed_text = bcrypt.hashpw(plain_text.encode('utf8'), bcrypt.gensalt())
 
     return hashed_text.decode('utf8')

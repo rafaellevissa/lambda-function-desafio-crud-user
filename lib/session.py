@@ -23,6 +23,8 @@ class Session:
     return list(map(self.__prettier, response['Items']))
 
   def __prettier(self, item: dict) -> dict:
+    assert isinstance(item, dict)
+
     return {
       'id': item['id']['S'],
       'token': item['token']['S'],

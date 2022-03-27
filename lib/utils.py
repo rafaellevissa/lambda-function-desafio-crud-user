@@ -15,4 +15,4 @@ def auth(event):
 
   token = event['headers']['Authorization'].replace('Bearer ', '')
 
-  return jwt.decode(token, os.environ['JWT_SECRET'])
+  return jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])

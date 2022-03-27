@@ -8,6 +8,7 @@ from lib.schemas import login_schema
 from lib.utils import response
 from lib.session import Session
 from datetime import datetime, timedelta, timezone
+from lib.exceptions import NotFound
 
 
 def handler(event, context):
@@ -17,18 +18,18 @@ def handler(event, context):
     validate(instance=payload, schema=login_schema)
 
     user = User().find_by_username(payload['username'])
-    not_found = 'The user was not found'
+    not_found = 'User could not be found'
 
     if not user:
-      raise Exception(not_found)
-    
+      raise NotFound(not_found)
+
     password_match = Hash().check(
       payload['password'],
       user['password']
     )
     
     if not password_match:
-      raise Exception(not_found)
+      raise NotFound(not_found)
 
     access_token_dict = {
       **user,
@@ -47,6 +48,8 @@ def handler(event, context):
 
     return response(200, data)
   except ValidationError as error:
-    return response(400, {'message': repr(error)})
+    return response(400, {'message': str(error)})
+  except NotFound as error:
+    return response(404, {'message': str(error)})
   except Exception as error:
-    return response(500, {'message': repr(error)})
+    return response(500, {'message': str(error)})

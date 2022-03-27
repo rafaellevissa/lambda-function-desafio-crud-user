@@ -11,6 +11,11 @@ def handler(event, context):
 
     validate(instance=payload, schema=register_user_schema)
 
+    user =  User().find_by_username(payload['username'])
+
+    if user:
+      raise ValueError('The username is registered already')
+
     user = User().create(payload).save()
 
     data = {
@@ -19,7 +24,9 @@ def handler(event, context):
     }
 
     return response(201, data)
-  except (ValidationError, IntegrityError) as error:
-    return response(400, {'message': repr(error)})
+  except (ValidationError, IntegrityError, ValueError) as error:
+    data = {'message': str(error)}
+    return response(400, data)
   except Exception as error:
-    return response(500, {'message': repr(error)})
+    data = {'message': str(error)}
+    return response(500, data)

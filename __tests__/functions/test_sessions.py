@@ -13,7 +13,11 @@ class TestSession:
     response = handler(event={}, context={})
     assert response == {
       'statusCode': 500,
-      'headers': { 'Content-Type': 'application/json' },
+      'headers': {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': True
+      },
       'body': '{"message": "KeyError(\'headers\')"}'
     }
   
@@ -48,7 +52,11 @@ class TestSession:
       assert isinstance(response, dict)
       assert response == {
         'statusCode': 200,
-        'headers': { 'Content-Type': 'application/json' },
+        'headers': {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': True
+        },
         'body': json.dumps({
           'user': user,
           'sessions': [

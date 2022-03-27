@@ -41,6 +41,7 @@ functions:
       - http:
           path: /login
           method: post
+          cors: true
 
   register:
     handler: functions/register.handler
@@ -48,6 +49,7 @@ functions:
       - http:
           path: /register
           method: post
+          cors: true
 
   sessions:
     handler: functions/sessions.handler
@@ -59,9 +61,18 @@ functions:
             name: auth
             identitySource: method.request.header.Authorization
             resultTtlInSeconds: 3600
-
+          cors: true
 resources:
   Resources:
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
     usersTable:
       Type: AWS::DynamoDB::Table
       Properties:

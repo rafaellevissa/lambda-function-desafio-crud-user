@@ -5,7 +5,11 @@ import os
 def response(status: int, body: dict) -> dict:
   return {
     'statusCode': status,
-    'headers': { 'Content-Type': 'application/json' },
+    'headers': { 
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': True,
+    },
     'body': json.dumps(body)
   }
 
